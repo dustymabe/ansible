@@ -2,7 +2,7 @@
 
 # https://github.com/ansible/ansible/issues/21185
 
-# Copyright: (c) 2018, Dusty Mabe <dusty@dustymabe.com>
+# Copyright: (c) 2019, Dusty Mabe <dusty@dustymabe.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # Make coding more python3-ish
@@ -79,7 +79,6 @@ def run_module():
         state=dict(default='present',
                    choices=['absent', 'present',
                             'installed', 'removed', 'latest']),
-                            
     )
 
     # seed the result dict in the object
@@ -99,21 +98,10 @@ def run_module():
     # supports check mode
     module = AnsibleModule(
         argument_spec=module_args,
-        supports_check_mode=True
+        supports_check_mode=False
     )
 
-    # if the user is working with this module in only check mode we do not
-    # want to make any changes to the environment, just return the current
-    # state with no modifications
-    if module.check_mode:
-        return result
-
-    # manipulate or modify the state as needed (this is going to be the
-    # part where your module will do what it needs to do)
-#   result['original_message'] = module.params['name']
-#   result['message'] = 'goodbye'
-
-    if module.params['state'] in ['installed', 'present']:
+    if module.params['state'] in ['installed', 'present', 'latest']:
         action = 'install'
     elif module.params['state'] in ['absent', 'removed']:
         action = 'uninstall'
